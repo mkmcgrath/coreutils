@@ -13,4 +13,12 @@ int main(int argc, char **argv) {
   }
   printf("size: %lld\n", (long long)st.st_size);
   printf("device ID: %li\n", st.st_dev);
+  printf("file type & mode: %ui\n", st.st_mode);
+  if (S_ISDIR(st.st_mode)) {
+    printf("dat jawn a directoreh\n");
+  }
+
+  if (S_ISREG(st.st_mode)) {
+    printf("dat jawn regelleh\n");
+  }
 }

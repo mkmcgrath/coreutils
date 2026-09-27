@@ -21,14 +21,14 @@ int main(int argc, char *argv[]) {
   fclose(f);
   fclose(g);
 
-  printf("energy_full %d\n", energy_full);
-  printf("energy_now %d\n", energy_now);
+  // printf("energy_full %d\n", energy_full);
+  // printf("energy_now %d\n", energy_now);
 
   double percent = ((double)energy_now / energy_full) * 100;
   int intpercent = ((double)energy_now / energy_full) * 100;
 
-  printf("percent %.2f%%\n", percent);
-  printf("percent %d\n", intpercent);
+  printf("%.2f%%\n", percent);
+  //  printf("percent %d\n", intpercent);
 
   // printf(".%d\n", remainder);
 

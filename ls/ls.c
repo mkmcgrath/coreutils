@@ -14,6 +14,8 @@ int print_from_inode() {
 
 int main(int argc, char **argv) {
 
+  struct stat st;
+
   setvbuf(stdout, NULL, _IOLBF, 0); // dont buffer output until program end
 
   int c;
@@ -81,6 +83,7 @@ int main(int argc, char **argv) {
     int firstChar;
     //    long int inode; // verdict is still out on if we need to worry about inode
     char filename[256];
+    int size;
   };
 
   struct entries items[i]; // this is the point of dp1 and dirp1, to allow us to properly size the entries array
@@ -91,9 +94,10 @@ int main(int argc, char **argv) {
     if (showhidden || dirp->d_name[0] != '.') { // hidden file support
       items[i].firstChar = dirp->d_name[0];     // load firstchar of dirent for sorting
       //      items[i].inode = dirp->d_ino;             // load inode for reference
-      snprintf(items[i].filename, sizeof(items[i].filename), "%s",
-               dirp->d_name); // load the dirent name string into filename
-      i++;                    // increment
+      snprintf(items[i].filename, sizeof(items[i].filename), "%s", dirp->d_name);
+      // ^^load the dirent name string into filename
+      items[i].size = stat(dirp);
+      i++; // increment
     }
   }
 
@@ -125,6 +129,9 @@ int main(int argc, char **argv) {
       color = purple;
       b = -1;
     }
+    //    if (stat(items[a], &st) != 0) {
+    //      perror(items[a]);
+    //    }
 
     printf("%s%s  %s", color, items[a].filename, colorend);
     // printf("%li %s\n", items[a].inode, items[a].filename); // show inode
