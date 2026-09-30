@@ -84,6 +84,7 @@ int main(int argc, char **argv) {
     //    long int inode; // verdict is still out on if we need to worry about inode
     char filename[256];
     int size;
+    struct stat st;
   };
 
   struct entries items[i]; // this is the point of dp1 and dirp1, to allow us to properly size the entries array
@@ -96,7 +97,9 @@ int main(int argc, char **argv) {
       //      items[i].inode = dirp->d_ino;             // load inode for reference
       snprintf(items[i].filename, sizeof(items[i].filename), "%s", dirp->d_name);
       // ^^load the dirent name string into filename
-      items[i].size = stat(dirp);
+      // items[i].size = stat(dirp);
+      stat(items[i], &st);
+
       i++; // increment
     }
   }
