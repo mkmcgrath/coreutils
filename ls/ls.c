@@ -77,9 +77,9 @@ int main(int argc, char **argv) {
     tgtdir = argv[optind];
   }
 
-  if ((dp = opendir(tgtdir)) == NULL) {             // targetdir needs to actually exist
-    perror("opendir");                              // give us the error to read
-    printf("you will now spontaneously combust\n"); // inform the user of their imminent demise
+  if ((dp = opendir(tgtdir)) == NULL) { // targetdir needs to actually exist
+    perror("opendir");                  // give us the error to read
+    printf("target does not exist\n");
     exit(1);
   }
 
