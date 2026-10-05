@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
   const char *red = "\033[0;31m";
   const char *green = "\033[0;32m";
   const char *brown = "\033[0;33m";
-  const char *blue = "\033[0;34m";
+
   const char *purple = "\033[0;35m";
   const char *cyan = "\033[0;36m";
   const char *yellow = "\033[1;33m";
@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
   while ((c = getopt(argc, argv, "malh")) != EOF) {
     switch (c) {
     case 'm': { // disable color
-      red = green = brown = blue = purple = cyan = yellow = colorend = "";
+      red = green = brown = purple = cyan = yellow = colorend = "";
       mono = 1;
       break;
     }
@@ -84,7 +84,7 @@ int main(int argc, char **argv) {
     //    long int inode; // verdict is still out on if we need to worry about inode
     char filename[256];
     int size;
-    struct stat st;
+    int isdir;
   };
 
   struct entries items[i]; // this is the point of dp1 and dirp1, to allow us to properly size the entries array
@@ -98,7 +98,18 @@ int main(int argc, char **argv) {
       snprintf(items[i].filename, sizeof(items[i].filename), "%s", dirp->d_name);
       // ^^load the dirent name string into filename
       // items[i].size = stat(dirp);
-      stat(items[i], &st);
+      if (S_ISDIR(st.st_mode)) {
+        items[i].isdir = 1;
+      }
+
+      if (S_ISREG(st.st_mode)) {
+        items[i].isdir = 0;
+      }
+
+      if (stat(argv[1], &st) != 0) {
+        perror(argv[1]);
+        return 1;
+      }
 
       i++; // increment
     }
@@ -127,7 +138,7 @@ int main(int argc, char **argv) {
     if (b == 2)
       color = brown;
     if (b == 3)
-      color = blue;
+      color = brown;
     if (b == 4) {
       color = purple;
       b = -1;
@@ -136,8 +147,8 @@ int main(int argc, char **argv) {
     //      perror(items[a]);
     //    }
 
-    printf("%s%s  %s", color, items[a].filename, colorend);
-    // printf("%li %s\n", items[a].inode, items[a].filename); // show inode
+    // printf("%s%s  %s", color, items[a].filename, colorend);
+    printf("%i %s\n", items[a].isdir, items[a].filename); // show inode
   }
   printf("\n");
 
