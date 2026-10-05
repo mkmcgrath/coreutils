@@ -1,10 +1,32 @@
 #include <dirent.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
-// todo: fix the colors to actually apply to the filetype
+#define BLUE "\033[01;34m"
+#define CYAN "\033[01;36m"
+#define GREEN "\033[01;32m"
+#define YELLOW "\033[40;33;01m"
+#define MAGENTA "\033[01;35m"
+#define RESET "\033[0m"
+
+const char *color_for(mode_t m) {
+  if (S_ISDIR(m))
+    return BLUE;
+  if (S_ISLNK(m))
+    return CYAN;
+  if (S_ISFIFO(m))
+    return YELLOW;
+  if (S_ISSOCK(m))
+    return MAGENTA;
+  if (S_ISBLK(m) || S_ISCHR(m))
+    return YELLOW;
+  if (m & (S_IXUSR | S_IXGRP | S_IXOTH))
+    return GREEN;
+  return "";
+}
 
 int print_from_inode() {
   printf("inode\n");
@@ -13,8 +35,6 @@ int print_from_inode() {
 }
 
 int main(int argc, char **argv) {
-
-  struct stat st;
 
   setvbuf(stdout, NULL, _IOLBF, 0); // dont buffer output until program end
 
@@ -25,15 +45,6 @@ int main(int argc, char **argv) {
   struct dirent *dirp1; // same as above
 
   const char *tgtdir = "."; // setting tgtdir (targetdir) to . in case program is called w/o argument
-  const char *red = "\033[0;31m";
-  const char *green = "\033[0;32m";
-  const char *brown = "\033[0;33m";
-
-  const char *purple = "\033[0;35m";
-  const char *cyan = "\033[0;36m";
-  const char *yellow = "\033[1;33m";
-
-  const char *colorend = "\033[0;37m";
   int mono = 0;
   int showhidden = 0;
   int showlong = 0;
@@ -42,7 +53,6 @@ int main(int argc, char **argv) {
   while ((c = getopt(argc, argv, "malh")) != EOF) {
     switch (c) {
     case 'm': { // disable color
-      red = green = brown = purple = cyan = yellow = colorend = "";
       mono = 1;
       break;
     }
@@ -81,35 +91,27 @@ int main(int argc, char **argv) {
 
   struct entries { // struct to allow us to sort filenames
     int firstChar;
-    //    long int inode; // verdict is still out on if we need to worry about inode
     char filename[256];
-    int size;
-    int isdir;
+    off_t size;
+    mode_t mode;
   };
 
   struct entries items[i]; // this is the point of dp1 and dirp1, to allow us to properly size the entries array
 
   i = 0; // reset increment
+  int dfd = dirfd(dp);
 
   while ((dirp = readdir(dp)) != NULL) {        // catch when we run out of entries
     if (showhidden || dirp->d_name[0] != '.') { // hidden file support
-      items[i].firstChar = dirp->d_name[0];     // load firstchar of dirent for sorting
-      //      items[i].inode = dirp->d_ino;             // load inode for reference
+      struct stat st;
+      if (fstatat(dfd, dirp->d_name, &st, AT_SYMLINK_NOFOLLOW) != 0) {
+        perror(dirp->d_name);
+        continue;
+      }
+      items[i].firstChar = dirp->d_name[0]; // load firstchar of dirent for sorting
       snprintf(items[i].filename, sizeof(items[i].filename), "%s", dirp->d_name);
-      // ^^load the dirent name string into filename
-      // items[i].size = stat(dirp);
-      if (S_ISDIR(st.st_mode)) {
-        items[i].isdir = 1;
-      }
-
-      if (S_ISREG(st.st_mode)) {
-        items[i].isdir = 0;
-      }
-
-      if (stat(argv[1], &st) != 0) {
-        perror(argv[1]);
-        return 1;
-      }
+      items[i].mode = st.st_mode;
+      items[i].size = st.st_size;
 
       i++; // increment
     }
@@ -130,25 +132,7 @@ int main(int argc, char **argv) {
   char b = 0;
 
   for (int a = 0; a < i; a++) { // finally print all items[] entries in order
-    b++;
-    if (b == 0)
-      color = red;
-    if (b == 1)
-      color = green;
-    if (b == 2)
-      color = brown;
-    if (b == 3)
-      color = brown;
-    if (b == 4) {
-      color = purple;
-      b = -1;
-    }
-    //    if (stat(items[a], &st) != 0) {
-    //      perror(items[a]);
-    //    }
-
-    // printf("%s%s  %s", color, items[a].filename, colorend);
-    printf("%i %s\n", items[a].isdir, items[a].filename); // show inode
+    printf("%s%s%s  ", color_for(items[a].mode), items[a].filename, RESET);
   }
   printf("\n");
 
