@@ -73,6 +73,14 @@ int main(int argc, char **argv) {
     }
   }
 
+  if (help) {
+    printf("usage: %s [-malh] [dir]\n", argv[0]);
+    return 0;
+  }
+
+  (void)mono;     // todo- supress color output
+  (void)showlong; // todo- add long options
+
   if (optind < argc) {
     tgtdir = argv[optind];
   }
@@ -127,9 +135,6 @@ int main(int argc, char **argv) {
     }
     items[b + 1] = key;
   }
-
-  const char *color;
-  char b = 0;
 
   for (int a = 0; a < i; a++) { // finally print all items[] entries in order
     printf("%s%s%s  ", color_for(items[a].mode), items[a].filename, RESET);
