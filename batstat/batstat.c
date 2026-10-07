@@ -6,7 +6,8 @@
 // this program pulls from energy_full to give an accurate reading of where the battery's actually at since the health
 // decreases over time
 
-int main(int argc, char *argv[]) {
+// int main(int argc, char *argv[]) {
+int main() {
   FILE *f = fopen("/sys/class/power_supply/BAT0/energy_full", "r");
   FILE *g = fopen("/sys/class/power_supply/BAT0/energy_now", "r");
   int energy_full;
@@ -25,7 +26,7 @@ int main(int argc, char *argv[]) {
   // printf("energy_now %d\n", energy_now);
 
   double percent = ((double)energy_now / energy_full) * 100;
-  int intpercent = ((double)energy_now / energy_full) * 100;
+  //  int intpercent = ((double)energy_now / energy_full) * 100;
 
   printf("%.2f%%\n", percent);
   //  printf("percent %d\n", intpercent);

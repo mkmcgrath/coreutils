@@ -14,7 +14,7 @@ int main(int argc, char *argv[], FILE *fp) {
   else {
     while (--argc > 0) {
       if ((fp = fopen(*++argv, "r")) == NULL) {
-        printf("cat: i have on idea what '%s' is twin \n", *argv);
+        printf("cat: i have no idea what '%s' is... \n", *argv);
         break;
 
       } else {

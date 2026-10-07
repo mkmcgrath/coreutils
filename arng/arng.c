@@ -11,8 +11,8 @@
 int main() {
   time_t now = time(NULL);
   long long seed = (long long)now % 10000;
-  srandom(seed);
-  long random_int = random();
+  srand(seed);
+  long random_int = rand();
   printf("%li\n", random_int);
   return 0;
 }
