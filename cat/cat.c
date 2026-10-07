@@ -4,6 +4,7 @@ int filecopy(FILE *fp) {
   while ((c = getc(fp)) != EOF) {
     putc(c, stdout);
   }
+  return 0;
 }
 
 int main(int argc, char *argv[], FILE *fp) {

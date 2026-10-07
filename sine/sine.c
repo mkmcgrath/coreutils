@@ -32,7 +32,7 @@ void generateAndWriteWave() {
   double x = 1;
 
   // Generate and write the sine wave to the buffer
-  for (unsigned int i = 0; i < SAMPLE_RATE * 1; ++i) {
+  for (int i = 0; i < SAMPLE_RATE * 1; ++i) {
 
     float sample0 = 0.5f * (float)sin(2.0 * M_PI * D * i / SAMPLE_RATE);
     float sample1 = 0.5f * (float)sin(2.0 * M_PI * A * i / SAMPLE_RATE + phase);
