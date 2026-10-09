@@ -4,10 +4,14 @@
 #include <stdio.h>
 #include <string.h>
 
+// to compile, use flags -lm and -lsndfile
+
 int SAMPLE_RATE = 44100;
 int direction = 1;
 
-double phase = M_PI / 2;
+constexpr double PI = 3.14159265358979323846;
+
+double phase = PI / 2;
 
 #define FRAMES_PER_BUFFER 256
 #define FILE_NAME "output.wav"
@@ -32,10 +36,10 @@ void generateAndWriteWave() {
   double x = 1;
 
   // Generate and write the sine wave to the buffer
-  for (int i = 0; i < SAMPLE_RATE * 1; ++i) {
+  for (int i = 0; i < SAMPLE_RATE * 6; ++i) {
 
-    float sample0 = 0.5f * (float)sin(2.0 * M_PI * D * i / SAMPLE_RATE);
-    float sample1 = 0.5f * (float)sin(2.0 * M_PI * A * i / SAMPLE_RATE + phase);
+    float sample0 = 0.5f * (float)sin(2.0 * PI * D * i / SAMPLE_RATE);
+    float sample1 = 0.5f * (float)sin(2.0 * PI * D * i / SAMPLE_RATE + phase);
 
     float combinedSample = sample0 + sample1;
     printf("%f\n", combinedSample);
