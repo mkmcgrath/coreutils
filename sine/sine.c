@@ -36,11 +36,11 @@ void generateAndWriteWave() {
   // Generate and write the sine wave to the buffer
   for (int p = 0; p < 6; p++) {
 
-    for (int i = 0; i < SAMPLE_RATE * .1; ++i) {
+    for (int i = 0; i < SAMPLE_RATE * 1; ++i) {
       double t = (double)i / SAMPLE_RATE;
       float frame[2];
       int y = i % 2;
-      int z = y * 1;
+      float z = y * 1 + 0.28;
 
       //    printf("%i\n", z);
 
@@ -54,11 +54,11 @@ void generateAndWriteWave() {
       sf_writef_float(file, frame, 1);
     }
 
-    for (int i = 0; i < SAMPLE_RATE * .1; ++i) {
+    for (int i = 0; i < SAMPLE_RATE * 1; ++i) {
       double t = (double)i / SAMPLE_RATE;
       float frame[2];
       int y = i % 2;
-      int z = y * 2;
+      float z = y * 2 - 0.132;
 
       //    printf("%i\n", z);
 
@@ -72,11 +72,11 @@ void generateAndWriteWave() {
       sf_writef_float(file, frame, 1);
     }
 
-    for (int i = 0; i < SAMPLE_RATE * .1; ++i) {
+    for (int i = 0; i < SAMPLE_RATE * 1; ++i) {
       double t = (double)i / SAMPLE_RATE;
       float frame[2];
       int y = i % 2;
-      int z = y * 3;
+      float z = y * 3 - 0.73;
 
       //    printf("%i\n", z);
 
