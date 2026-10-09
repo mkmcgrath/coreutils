@@ -22,7 +22,7 @@ void generateAndWriteWave() {
   SF_INFO sfinfo;
 
   // Initializing and defining variables for the function.
-  sfinfo.channels = 1;
+  sfinfo.channels = 2;
   sfinfo.samplerate = SAMPLE_RATE;
   sfinfo.format = SF_FORMAT_WAV | SF_FORMAT_FLOAT;
 
@@ -33,19 +33,62 @@ void generateAndWriteWave() {
     return;
   }
 
-  double x = 1;
-
   // Generate and write the sine wave to the buffer
-  for (int i = 0; i < SAMPLE_RATE * 6; ++i) {
+  for (int p = 0; p < 6; p++) {
 
-    float sample0 = 0.5f * (float)sin(2.0 * PI * D * i / SAMPLE_RATE);
-    float sample1 = 0.5f * (float)sin(2.0 * PI * D * i / SAMPLE_RATE + phase);
+    for (int i = 0; i < SAMPLE_RATE * .1; ++i) {
+      double t = (double)i / SAMPLE_RATE;
+      float frame[2];
+      int y = i % 2;
+      int z = y * 1;
 
-    float combinedSample = sample0 + sample1;
-    printf("%f\n", combinedSample);
-    printf("x=%f\n", x);
+      //    printf("%i\n", z);
 
-    sf_writef_float(file, &combinedSample, 1);
+      frame[0] = 0.5f * (float)sin(2.0 * PI * D * z * t);
+      frame[1] = 0.5f * (float)sin(2.0 * PI * D * t + phase);
+
+      // float combinedSample = sample0 + sample1;
+      // printf("%f\n", combinedSample);
+      // printf("x=%f\n", x);
+
+      sf_writef_float(file, frame, 1);
+    }
+
+    for (int i = 0; i < SAMPLE_RATE * .1; ++i) {
+      double t = (double)i / SAMPLE_RATE;
+      float frame[2];
+      int y = i % 2;
+      int z = y * 2;
+
+      //    printf("%i\n", z);
+
+      frame[0] = 0.5f * (float)sin(2.0 * PI * D * z * t);
+      frame[1] = 0.5f * (float)sin(2.0 * PI * D * t + phase);
+
+      // float combinedSample = sample0 + sample1;
+      // printf("%f\n", combinedSample);
+      // printf("x=%f\n", x);
+
+      sf_writef_float(file, frame, 1);
+    }
+
+    for (int i = 0; i < SAMPLE_RATE * .1; ++i) {
+      double t = (double)i / SAMPLE_RATE;
+      float frame[2];
+      int y = i % 2;
+      int z = y * 3;
+
+      //    printf("%i\n", z);
+
+      frame[0] = 0.5f * (float)sin(2.0 * PI * D * z * t);
+      frame[1] = 0.5f * (float)sin(2.0 * PI * D * t + phase);
+
+      // float combinedSample = sample0 + sample1;
+      // printf("%f\n", combinedSample);
+      // printf("x=%f\n", x);
+
+      sf_writef_float(file, frame, 1);
+    }
   }
 
   // Close the output file
