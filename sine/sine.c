@@ -42,7 +42,7 @@ void generateAndWriteWave() {
       double t = (double)i / SAMPLE_RATE;
       float frame[2];
 
-      frame[0] = 0.5f * (float)sin(2.0 * PI * (C + z) * t);
+      frame[0] = 0.5f * (float)sin(2.0 * PI * C * t);
       frame[1] = 0.5f * (float)cos(2.0 * PI * C * t);
 
       sf_writef_float(file, frame, 1);
