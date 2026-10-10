@@ -34,58 +34,16 @@ void generateAndWriteWave() {
   }
 
   // Generate and write the sine wave to the buffer
-  for (int p = 0; p < 6; p++) {
+  for (int p = 0; p < 1; p++) {
 
-    for (int i = 0; i < SAMPLE_RATE * 1; ++i) {
+    //    for (double z = 0; z < .001; z = z + .0001) {
+    for (double i = 0, z = 0; i < SAMPLE_RATE * 6; ++i, z = z + 0.00005) {
+
       double t = (double)i / SAMPLE_RATE;
       float frame[2];
-      int y = i % 2;
-      float z = y * 1 + 0.28;
 
-      //    printf("%i\n", z);
-
-      frame[0] = 0.5f * (float)sin(2.0 * PI * D * z * t);
-      frame[1] = 0.5f * (float)sin(2.0 * PI * D * t + phase);
-
-      // float combinedSample = sample0 + sample1;
-      // printf("%f\n", combinedSample);
-      // printf("x=%f\n", x);
-
-      sf_writef_float(file, frame, 1);
-    }
-
-    for (int i = 0; i < SAMPLE_RATE * 1; ++i) {
-      double t = (double)i / SAMPLE_RATE;
-      float frame[2];
-      int y = i % 2;
-      float z = y * 2 - 0.132;
-
-      //    printf("%i\n", z);
-
-      frame[0] = 0.5f * (float)sin(2.0 * PI * D * z * t);
-      frame[1] = 0.5f * (float)sin(2.0 * PI * D * t + phase);
-
-      // float combinedSample = sample0 + sample1;
-      // printf("%f\n", combinedSample);
-      // printf("x=%f\n", x);
-
-      sf_writef_float(file, frame, 1);
-    }
-
-    for (int i = 0; i < SAMPLE_RATE * 1; ++i) {
-      double t = (double)i / SAMPLE_RATE;
-      float frame[2];
-      int y = i % 2;
-      float z = y * 3 - 0.73;
-
-      //    printf("%i\n", z);
-
-      frame[0] = 0.5f * (float)sin(2.0 * PI * D * z * t);
-      frame[1] = 0.5f * (float)sin(2.0 * PI * D * t + phase);
-
-      // float combinedSample = sample0 + sample1;
-      // printf("%f\n", combinedSample);
-      // printf("x=%f\n", x);
+      frame[0] = 0.5f * (float)sin(2.0 * PI * (C + z) * t);
+      frame[1] = 0.5f * (float)sin(2.0 * PI * CS * t + phase);
 
       sf_writef_float(file, frame, 1);
     }
