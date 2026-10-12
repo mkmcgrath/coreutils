@@ -37,7 +37,7 @@ void generateAndWriteWave() {
   for (int p = 0; p < 1; p++) {
 
     //    for (double z = 0; z < .001; z = z + .0001) {
-    for (double i = 0, z = 0; i < SAMPLE_RATE * 6; ++i, z = z + 0.00005) {
+    for (double i = 0, z = 0; i < SAMPLE_RATE * 6; ++i, z = z + 0.002) {
       // for (double i = 0; i < SAMPLE_RATE * 6; ++i) {
       double t = (double)i / SAMPLE_RATE;
       float frame[2];
