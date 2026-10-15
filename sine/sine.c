@@ -1,7 +1,9 @@
 #include "frequencies.h"
+#include <complex.h>
 #include <math.h>
 #include <sndfile.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 // to compile, use flags -lm and -lsndfile
@@ -35,15 +37,16 @@ void generateAndWriteWave() {
 
   // Generate and write the sine wave to the buffer
   for (int p = 0; p < 1; p++) {
-
     //    for (double z = 0; z < .001; z = z + .0001) {
-    for (double i = 0, z = 0; i < SAMPLE_RATE * 6; ++i, z = z + 0.002) {
+    for (double i = 0, z = 0, x = 0; i < SAMPLE_RATE * 1; i = i + 0.1, z = z + 0.005, x = x + 0.00003) {
       // for (double i = 0; i < SAMPLE_RATE * 6; ++i) {
       double t = (double)i / SAMPLE_RATE;
+      double A = 0.5;
+      //      printf("%f\n", A);
       float frame[2];
 
-      frame[0] = 0.5f * (float)sin(2.0 * PI * C * t);
-      frame[1] = 0.5f * (float)cos(2.0 * PI * C * t);
+      frame[0] = A * (float)sin(2.0 * PI * C4 * t);
+      frame[1] = A * (float)cos(2.0 * PI * E4 * t);
 
       sf_writef_float(file, frame, 1);
     }
